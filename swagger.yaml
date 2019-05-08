@@ -1,0 +1,81 @@
+swagger: "2.0"
+info:
+  title: "UNIFI Controller API"
+  version: "0.0.1"
+host: "unifi.contoller.local"
+basePath: "/api/"
+schemes: ["https"]
+consumes: ["application/json"]
+produces: ["application/json"]
+paths:
+  /stat/sites:
+    get:
+      operationId: SitesList
+      description: Get list of sites
+      responses:
+        200:
+          description: Login response with cookie
+          schema:
+            $ref: "#/definitions/sitesListResponse"
+definitions:
+  sitesListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/siteItem'
+  siteItem:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      desc:
+        type: string
+      attr_hidden_id:
+        type: string
+      attr_no_delete:
+        type: boolean
+      role:
+        type: string
+      num_new_alarms:
+        type: integer
+      health:
+        type: array
+        items:
+          $ref: '#/definitions/siteItemHealth'
+  siteItemHealth:
+    type: object
+    properties:
+      subsystem:
+        type: string
+      num_user:
+        type: integer
+      num_guest:
+        type: integer
+      num_iot:
+        type: integer
+      tx_bytes-r:
+        type: integer
+      rx_bytes-r:
+        type: integer
+      status:
+        type: string
+      num_ap:
+        type: integer
+      num_adopted:
+        type: integer
+      num_disabled:
+        type: integer
+      num_disconnected:
+        type: integer
+      num_pending:
+        type: integer
+      num_gw:
+        type: integer
+      num_sw:
+        type: integer
+
+
