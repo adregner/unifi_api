@@ -14,16 +14,16 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// SitesListResponse sites list response
-// swagger:model sitesListResponse
-type SitesListResponse struct {
+// GetSiteHealthResponse get site health response
+// swagger:model getSiteHealthResponse
+type GetSiteHealthResponse struct {
 
 	// data
-	Data []*SiteItem `json:"data"`
+	Data []*SiteItemHealth `json:"data"`
 }
 
-// Validate validates this sites list response
-func (m *SitesListResponse) Validate(formats strfmt.Registry) error {
+// Validate validates this get site health response
+func (m *GetSiteHealthResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateData(formats); err != nil {
@@ -36,7 +36,7 @@ func (m *SitesListResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *SitesListResponse) validateData(formats strfmt.Registry) error {
+func (m *GetSiteHealthResponse) validateData(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.Data) { // not required
 		return nil
@@ -62,7 +62,7 @@ func (m *SitesListResponse) validateData(formats strfmt.Registry) error {
 }
 
 // MarshalBinary interface implementation
-func (m *SitesListResponse) MarshalBinary() ([]byte, error) {
+func (m *GetSiteHealthResponse) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -70,8 +70,8 @@ func (m *SitesListResponse) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *SitesListResponse) UnmarshalBinary(b []byte) error {
-	var res SitesListResponse
+func (m *GetSiteHealthResponse) UnmarshalBinary(b []byte) error {
+	var res GetSiteHealthResponse
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

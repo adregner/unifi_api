@@ -36,7 +36,7 @@ func (a *Client) SitesList(params *SitesListParams) (*SitesListOK, error) {
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "SitesList",
 		Method:             "GET",
-		PathPattern:        "/stat/sites",
+		PathPattern:        "/self/sites",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -49,6 +49,174 @@ func (a *Client) SitesList(params *SitesListParams) (*SitesListOK, error) {
 		return nil, err
 	}
 	return result.(*SitesListOK), nil
+
+}
+
+/*
+SitesListDetails Get list of sites with health data
+*/
+func (a *Client) SitesListDetails(params *SitesListDetailsParams) (*SitesListDetailsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSitesListDetailsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "SitesListDetails",
+		Method:             "GET",
+		PathPattern:        "/stat/sites",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SitesListDetailsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*SitesListDetailsOK), nil
+
+}
+
+/*
+GetNeighboringAccessPoints Returns list of access points near the site
+*/
+func (a *Client) GetNeighboringAccessPoints(params *GetNeighboringAccessPointsParams) (*GetNeighboringAccessPointsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetNeighboringAccessPointsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getNeighboringAccessPoints",
+		Method:             "GET",
+		PathPattern:        "/s/{site_name}/stat/rogueap",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetNeighboringAccessPointsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetNeighboringAccessPointsOK), nil
+
+}
+
+/*
+GetSiteClients Returns a list of clients for a site
+*/
+func (a *Client) GetSiteClients(params *GetSiteClientsParams) (*GetSiteClientsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSiteClientsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSiteClients",
+		Method:             "GET",
+		PathPattern:        "/s/{site_name}/stat/sta",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSiteClientsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSiteClientsOK), nil
+
+}
+
+/*
+GetSiteEvents Returns a list of events for a site, newest first
+*/
+func (a *Client) GetSiteEvents(params *GetSiteEventsParams) (*GetSiteEventsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSiteEventsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSiteEvents",
+		Method:             "GET",
+		PathPattern:        "/s/{site_name}/stat/event",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSiteEventsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSiteEventsOK), nil
+
+}
+
+/*
+GetSiteHealth Returns a sites health metrics
+*/
+func (a *Client) GetSiteHealth(params *GetSiteHealthParams) (*GetSiteHealthOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSiteHealthParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSiteHealth",
+		Method:             "GET",
+		PathPattern:        "/s/{site_name}/stat/health",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSiteHealthReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSiteHealthOK), nil
+
+}
+
+/*
+GetSystemInfo Get information about the controller
+*/
+func (a *Client) GetSystemInfo(params *GetSystemInfoParams) (*GetSystemInfoOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSystemInfoParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSystemInfo",
+		Method:             "GET",
+		PathPattern:        "/s/{site_name}/stat/sysinfo",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSystemInfoReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSystemInfoOK), nil
 
 }
 

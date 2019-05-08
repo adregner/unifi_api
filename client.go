@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"time"
-
-	"github.com/davecgh/go-spew/spew"
 
 	"github.com/bah2830/unifi_api/pkg/client"
 	runtimeClient "github.com/go-openapi/runtime/client"
@@ -96,12 +94,9 @@ func (c *Client) authenticate() error {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
+	if resp.StatusCode != 200 {
+		return errors.New("unable to authenticate")
 	}
-
-	spew.Dump(string(respBody))
 
 	return nil
 }

@@ -8,23 +8,224 @@ schemes: ["https"]
 consumes: ["application/json"]
 produces: ["application/json"]
 paths:
-  /stat/sites:
+  /self/sites:
     get:
       operationId: SitesList
       description: Get list of sites
       responses:
         200:
-          description: Login response with cookie
+          description: Site list response
           schema:
-            $ref: "#/definitions/sitesListResponse"
+            $ref: "#/definitions/getSitesListResponse"
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /stat/sites:
+    get:
+      operationId: SitesListDetails
+      description: Get list of sites with health data
+      responses:
+        200:
+          description: Site list response
+          schema:
+            $ref: "#/definitions/getSitesListResponse"
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /s/{site_name}/stat/sysinfo:
+    get:
+      operationId: getSystemInfo
+      description: Get information about the controller
+      parameters:
+        - name: site_name
+          in: path
+          description: the site name
+          required: true
+          type: string
+      responses:
+        200:
+          description: Valid system info response
+          schema:
+            $ref: '#/definitions/getSystemInfoResponse'
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /s/{site_name}/stat/health:
+    get:
+      operationId: getSiteHealth
+      description: Returns a sites health metrics
+      parameters:
+        - name: site_name
+          in: path
+          description: the site name
+          required: true
+          type: string
+      responses:
+        200:
+          description: the site health response
+          schema:
+            $ref: '#/definitions/getSiteHealthResponse'
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /s/{site_name}/stat/event:
+    get:
+      operationId: getSiteEvents
+      description: Returns a list of events for a site, newest first
+      parameters:
+        - name: site_name
+          in: path
+          description: the site name
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful site event response
+          schema:
+            $ref: '#/definitions/getSiteEventsResponse'
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /s/{site_name}/stat/sta:
+    get:
+      operationId: getSiteClients
+      description: Returns a list of clients for a site
+      parameters:
+        - name: site_name
+          in: path
+          description: the site name
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful site client list response
+          schema:
+            $ref: '#/definitions/getSiteClientsResponse'
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /s/{site_name}/stat/rogueap:
+    get:
+      operationId: getNeighboringAccessPoints
+      description: Returns list of access points near the site
+      parameters:
+        - name: site_name
+          in: path
+          description: the site name
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful site access point list
+          schema:
+            $ref: '#/definitions/getNeighboringAccessPointsResponse'
+        default:
+          description: Error response
+          schema:
+            $ref: "#/definitions/errorResponse"
 definitions:
-  sitesListResponse:
+  getSitesListResponse:
     type: object
     properties:
       data:
         type: array
         items:
           $ref: '#/definitions/siteItem'
+  getSiteHealthResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/siteItemHealth'
+  getSystemInfoResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            timezone:
+              type: string
+            autobackup:
+              type: boolean
+            build:
+              type: string
+            version:
+              type: string
+            debug_mgmt:
+              type: string
+            debug_system:
+              type: string
+            debug_device:
+              type: string
+            debug_sdn:
+              type: string
+            data_retention_days:
+              type: integer
+            data_retention_time_in_hours_for_5minutes_scale:
+              type: integer
+            data_retention_time_in_hours_for_hourly_scale:
+              type: integer
+            data_retention_time_in_hours_for_daily_scale:
+              type: integer
+            data_retention_time_in_hours_for_monthly_scale:
+              type: integer
+            data_retention_time_in_hours_for_others:
+              type: integer
+            update_available:
+              type: boolean
+            update_downloaded:
+              type: boolean
+            live_chat:
+              type: string
+            store_enabled:
+              type: string
+            hostname:
+              type: string
+            name:
+              type: string
+            ip_addrs:
+              type: array
+              items:
+                type: string
+            inform_port:
+              type: integer
+            https_port:
+              type: integer
+            override_inform_host:
+              type: boolean
+            image_maps_use_google_engine:
+              type: boolean
+            radius_disconnect_running:
+              type: boolean
+            facebook_wifi_registered:
+              type: boolean
+            unsupported_device_count:
+              type: integer
+            unifi_go_enabled:
+              type: boolean
+            default_site_device_auth_password_alert:
+              type: boolean
+  getSiteEventsResponse:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          count:
+            type: integer
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/siteEvent'
   siteItem:
     type: object
     properties:
@@ -77,5 +278,231 @@ definitions:
         type: integer
       num_sw:
         type: integer
+  siteEvent:
+    type: object
+    properties:
+      _id:
+        type: string
+      ap:
+        type: string
+      user:
+        type: string
+      radio_from:
+        type: string
+      radio_to:
+        type: string
+      channel_from:
+        type: string
+      channel_to:
+        type: string
+      key:
+        type: string
+      subsystem:
+        type: string
+      site_id:
+        type: string
+      time:
+        type: integer
+        format: int64
+      datetime:
+        type: string
+        format: date-time
+      msg:
+        type: string
+  getSiteClientsResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            site_id:
+              type: string
+            assoc_time:
+              type: integer
+              format: int64
+            latest_assoc_time:
+              type: integer
+              format: int64
+            oui:
+              type: string
+            user_id:
+              type: string
+            _id:
+              type: string
+            mac:
+              type: string
+            is_guest:
+              type: boolean
+            first_seen:
+              type: integer
+              format: int64
+            last_seen:
+              type: integer
+              format: int64
+            is_wired:
+              type: boolean
+            hostname:
+              type: string
+            usergroup_id:
+              type: string
+            name:
+              type: string
+            noted:
+              type: boolean
+            _uptime_by_uap:
+              type: integer
+              format: int64
+            _last_seen_by_uap:
+              type: integer
+              format: int64
+            _is_guest_by_uap:
+              type: integer
+              format: int64
+            ap_mac:
+              type: string
+            channel:
+              type: integer
+            radio:
+              type: string
+            radio_name:
+              type: string
+            essid:
+              type: string
+            bssid:
+              type: string
+            powersave_enabled:
+              type: boolean
+            is_11r:
+              type: boolean
+            ccq:
+              type: integer
+            rssi:
+              type: integer
+            noise:
+              type: integer
+            signal:
+              type: integer
+            tx_rate:
+              type: integer
+            rx_rate:
+              type: integer
+            tx_power:
+              type: integer
+            idletime:
+              type: integer
+            ip:
+              type: string
+            dhcpend_time:
+              type: integer
+              format: int64
+            satisfaction:
+              type: integer
+              format: int64
+            anomalies:
+              type: integer
+              format: int64
+            vlan:
+              type: integer
+              format: int64
+            radio_proto:
+              type: integer
+              format: int64
+            uptime:
+              type: integer
+              format: int64
+            tx_bytes:
+              type: integer
+              format: int64
+            rx_bytes:
+              type: integer
+              format: int64
+            tx_packets:
+              type: integer
+              format: int64
+            rx_packets:
+              type: integer
+              format: int64
+            bytes:
+              type: integer
+              format: int64
+            tx_bytes:
+              type: integer
+              format: int64
+            rx_bytes:
+              type: integer
+              format: int64
+            authorized:
+              type: boolean
+            qos_policy_applied:
+              type: string
+  getNeighboringAccessPointsResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            _id:
+              type: string
+            age:
+              type: integer
+            band:
+              type: string
+            bssid:
+              type: string
+            bw:
+              type: integer
+            center_freq:
+              type: integer
+            channel:
+              type: integer
+            essid:
+              type: string
+            freq:
+              type: integer
+            is_adhoc:
+              type: boolean
+            is_ubnt:
+              type: boolean
+            noise:
+              type: integer
+            rssi:
+              type: integer
+            rssi_age:
+              type: integer
+            security:
+              type: string
+            signal:
+              type: integer
+            site_id:
+              type: string
+            ap_mac:
+              type: string
+            radio:
+              type: string
+            radio_name:
+              type: string
+            last_seen:
+              type: integer
+              format: int64
+            report_time:
+              type: integer
+              format: int64
+            is_rogue:
+              type: boolean
+            oui:
+              type: string
+  errorResponse:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          msg:
+            type: string
+
 
 
